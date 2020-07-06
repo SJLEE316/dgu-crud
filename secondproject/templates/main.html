@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 
 {% include 'shared/_navbar.html' %}
@@ -9,5 +11,7 @@
     <a href='{% url "others:photo" %}'>photo</a>
     <a href='{% url "others:visit" %}'>visit</a>
 </h1>
+
+<img src="{% static 'images/welcome.PNG' %}">
 
 {% endblock %}
