@@ -7,11 +7,17 @@
 {% include 'shared/_navbar.html' %}
 
 <h1>
-    <a href='{% url "others:profile" %}'>profile</a>
-    <a href='{% url "others:photo" %}'>photo</a>
-    <a href='{% url "others:visit" %}'>visit</a>
+    MY BLOG
 </h1>
 
 <img src="{% static 'images/welcome.PNG' %}">
+
+<h3>
+    <a href='{% url "home:address" %}'>address</a>
+    <a href='{% url "home:design" %}'>design</a>
+    <a href='{% url "home:phone" %}'>phone</a>
+</h3>
+
+
 
 {% endblock %}
