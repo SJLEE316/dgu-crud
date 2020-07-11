@@ -22,5 +22,7 @@ urlpatterns = [
     path('',main, name="main"),
     path('others/', include('others.urls')),
     path('home/', include('home.urls')),
-    path('button/', include('button.urls'))
+    path('button/', include('button.urls')),
+    path('posts/', include('posts.urls')),
+
 ]
