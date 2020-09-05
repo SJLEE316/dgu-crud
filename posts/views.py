@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post
+from .models import *
 
 def new(request):
     return render(request, 'posts/new.html')
@@ -21,7 +21,8 @@ def show(request, id):
     post = Post.objects.get(pk=id)
     post.view_count += 1
     post.save()
-    return render(request, 'posts/show.html', {'post': post})
+    all_comments = post.comments.all().order_by('-created_at')
+    return render(request, 'posts/show.html', {'post': post, 'comments':all_comments})
 
 def update(request, id):
     post=get_object_or_404(Post,pk=id)
@@ -37,5 +38,42 @@ def delete(request, id):
     post = get_object_or_404(Post, pk=id)
     post.delete()
     return redirect('posts:main')    
+
+def create_comment(request, post_id) : #어느 게시글?
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=post_id)
+        current_user = request.user
+        comment_content= request.POST.get('content') #textarea
+        Comment.objects.create(content=comment_content, writer=current_user, post=post) #모델=우리가 넣어줄 값
+    return redirect('posts:show', post.pk)    #POST가 아니어도 return가능
+    
+def update_comment(request, post_id, comment_id):
+    post = get_object_or_404(Post, pk=post_id)
+    comment = get_object_or_404(Comment, pk=comment_id)
+    if request.method=="POST":
+        comment.content = request.POST['content']
+        comment.save()
+        all_comments = post.comments.all()
+        return redirect('posts:show', post.pk)
+    return render(request, 'posts/update_comment.html')
+   
+def delete_comment(request, post_id, comment_id):
+    post = get_object_or_404(Post, pk=post_id)
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.delete()
+    return redirect('posts:show', post.pk)
+
+@login_required
+def post_like(request, post_id): #어떤 포스트?
+    post = get_object_or_404(Post, pk=post_id)
+    post_like, post_like_created = post.like_set.get_or_create(user=request.user)
+
+    if not post_like_created:
+        post_like.delete()
+
+    if request.GET.get('redirect_to') == 'show':
+        return redirect('posts:show', post_id)
+    else:
+        return redirect('posts:main')
 
 # Create your views here.

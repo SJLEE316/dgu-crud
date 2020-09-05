@@ -14,15 +14,60 @@
         <h3> 작성자 : 알수없음 </h3><br>
     {% endif %}
 
+    {% if post.image %}
+	    <img src ="{{ post.image.url }}">
+    {%  endif %}
 
+    <br>
+    
     {% if user == post.user %}
         <a href="{% url 'posts:update' post.pk %}" class="btn btn-primary"> 수정 </a>
         <a href="{% url 'posts:delete' post.pk %}" class="btn btn-danger"> 삭제 </a>
     {% endif %}
 
+    <a href="{% url 'posts:main' %}"  class="btn btn-primary"> 메인으로 가기 </a>
 
-    {% if post.image %}
-	    <img src ="{{ post.image.url }}">
-    {%  endif %}
+
+    <div class="container">
+        <a href="{% url 'posts:post_like' post.id %}?redirect_to=show">
+            {% if user in post.like_user_set.all %}
+                <i class="fas fa-heart"></i>
+            {% else %}
+                <i class="far fa-heart"></i>
+            {% endif %}
+        </a>    
+    </div>
+
+
+    <div class="container mt-5">
+        <form class="form-row" action="{% url 'posts:create_comment' post.id %}" method="POST">
+            {% csrf_token %}
+            <textarea class="form-control col-11 mr-2" name="content" placeholder="댓글 내용 입력..."></textarea>
+            <input type="submit" class="btn btn-primary" value="확인">
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        {% for comment in comments %}
+        <div class="card">
+            <div class="card-body">
+                <b> {{comment.writer}} </b> : {{comment.content}}<br>
+                <small>
+                    작성:{{comment.created_at}}<br>
+                    수정:{{comment.updated_at}}
+                </small>
+                {% if user == comment.writer %}
+                    <a href="{% url 'posts:update_comment' post.pk comment.pk %}" class="btn btn-primary"> 수정 </a>
+                    <a href="{% url 'posts:delete_comment' post.pk comment.pk %}" class="btn btn-danger"> 삭제 </a>
+
+                {% endif %}
+            </div>
+
+
+        </div>
+
+        {% endfor %}
+    </div>
+
 
 {% endblock %}
