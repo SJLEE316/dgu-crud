@@ -13,6 +13,7 @@ urlpatterns = [
     path('<int:post_id>/<int:comment_id>/update_comment', update_comment, name="update_comment"),
     path('<int:post_id>/<int:comment_id>/delete_comment', delete_comment, name="delete_comment"),
     path('<int:post_id>/post_like', post_like, name="post_like"),
+    path('like_list/', like_list, name="like_list"),
 
 
 ]

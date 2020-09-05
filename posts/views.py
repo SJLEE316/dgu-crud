@@ -76,4 +76,9 @@ def post_like(request, post_id): #어떤 포스트?
     else:
         return redirect('posts:main')
 
+@login_required
+def like_list(request):
+    likes = request.user.like_set.all()
+    return render(request,'posts/like_list.html',{'likes':likes})
+
 # Create your views here.
