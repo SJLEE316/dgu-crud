@@ -18,6 +18,12 @@
 	    <img src ="{{ post.image.url }}">
     {%  endif %}
 
+    <h3>좋아요 {{post.like_count}}개</h3>
+    <h6>좋아요 누른 사람</h6>
+    {% for like_user in post.like_user_set.all %}
+        <h6>{{ like_user.username }} </h6>
+    {% endfor %}
+            
     <br>
     
     {% if user == post.user %}

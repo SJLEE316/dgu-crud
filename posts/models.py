@@ -31,6 +31,7 @@ class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    view_count = models.IntegerField(default=0)
 
     class Meta:
         unique_together = (('user','post'))
