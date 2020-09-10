@@ -55,7 +55,7 @@ def update_comment(request, post_id, comment_id):
         comment.save()
         all_comments = post.comments.all()
         return redirect('posts:show', post.pk)
-    return render(request, 'posts/update_comment.html')
+    return render(request, 'posts/update_comment.html', {'comment' :comment})
    
 def delete_comment(request, post_id, comment_id):
     post = get_object_or_404(Post, pk=post_id)
